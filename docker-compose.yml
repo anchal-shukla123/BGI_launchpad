@@ -1,0 +1,33 @@
+version: "3.8"
+
+services:
+  mysql:
+    image: mysql:8
+    container_name: bgi-mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: bgi_launchpad
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - bgi-net
+
+  app:
+    image: anchal2005/bgi-launchpad:latest
+    container_name: bgi-launchpad
+    restart: always
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mysql
+    networks:
+      - bgi-net
+
+networks:
+  bgi-net:
+
+volumes:
+  mysql_data:
